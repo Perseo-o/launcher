@@ -6,7 +6,7 @@ class SoundTile extends StatelessWidget {
   final bool isPlaying;
   final VoidCallback onPlay;
 
-  const SoundTile({
+  const SoundTile({super.key, 
     required this.sound,
     required this.isPlaying,
     required this.onPlay,
@@ -19,7 +19,7 @@ class SoundTile extends StatelessWidget {
         backgroundImage: AssetImage(sound.image),
       ),
       title: Text(sound.name),
-      subtitle: isPlaying ? const Text('In riproduzione...', style: const TextStyle(color: Colors.green)) : null,
+      subtitle: isPlaying ? const Text('In riproduzione...', style: TextStyle(color: Colors.green)) : null,
       trailing: IconButton(
         icon: const Icon(Icons.play_arrow),
         onPressed: onPlay,

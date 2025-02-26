@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PlayButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const PlayButton({required this.onPressed});
+  const PlayButton({super.key, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {

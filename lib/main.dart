@@ -6,7 +6,7 @@ void main() {
 }
 
 class LaunchpadApp extends StatelessWidget {
-  const LaunchpadApp({Key? key}) : super(key: key); // Qui è il cambiamento
+  const LaunchpadApp({super.key}); // Qui è il cambiamento
 
   @override
   Widget build(BuildContext context) {

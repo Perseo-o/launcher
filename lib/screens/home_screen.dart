@@ -3,6 +3,8 @@ import '../models/sound_model.dart';
 import '../services/sound_service.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
