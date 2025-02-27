@@ -1,7 +1,7 @@
 class Sound {
   final String name;
-  final String image; // Per l'immagine del suono
-  final String filePath; // Percorso locale del suono
+  final String image;
+  final String filePath;
 
   Sound({
     required this.name,
