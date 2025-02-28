@@ -1,7 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../models/sound_model.dart';
 import '../services/sound_service.dart';
+import '../widgets/sound_tile.dart';
+import 'second_screen.dart'; // Importa la seconda schermata
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -28,12 +32,13 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+
   void _playSound(String soundPath) async {
+    log(soundPath);
     if (playingSound == soundPath) {
       await _audioPlayer.stop();
-      setState(() {
-        playingSound = null;
-      });
+      setState(() => playingSound = null);
       return;
     }
 
@@ -41,8 +46,12 @@ class _HomeScreenState extends State<HomeScreen> {
     await _audioPlayer.setSourceAsset(soundPath);
     await _audioPlayer.resume();
 
-    setState(() {
-      playingSound = soundPath;
+    setState(() => playingSound = soundPath);
+
+    _audioPlayer.onPlayerComplete.listen((event) {
+      setState(() {
+        playingSound = null;
+      });
     });
   }
 
@@ -56,55 +65,55 @@ class _HomeScreenState extends State<HomeScreen> {
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      body: soundList.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : GridView.builder(
-        padding: const EdgeInsets.all(10),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 3,
-          crossAxisSpacing: 13,
-          mainAxisSpacing: 12,
-        ),
-        itemCount: soundList.length,
-        itemBuilder: (context, index) {
-          final sound = soundList[index];
-          final isPlaying = sound.filePath == playingSound;
-
-          return GestureDetector(
-            onTap: () => _playSound(sound.filePath),
-            child: Container(
-              decoration: BoxDecoration(
-                color: isPlaying ? Colors.green : Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                  image: AssetImage(sound.image),
-                  fit: BoxFit.cover,
-                ),
+      body: Column(
+        children: [
+          // Lista dei suoni
+          Expanded(
+            child: soundList.isEmpty
+                ? const Center(child: CircularProgressIndicator())
+                : GridView.builder(
+              padding: const EdgeInsets.all(15),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                crossAxisSpacing: 13,
+                mainAxisSpacing: 12,
               ),
-              child: Stack(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      sound.name,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
+              itemCount: soundList.length,
+              itemBuilder: (context, index) {
+                final sound = soundList[index];
+                final isPlaying = sound.filePath == playingSound;
+
+                return Padding(
+                    padding: const EdgeInsets.all(8.0), // Padding interno ai tile
+                child:SoundTile(
+                  sound: sound,
+                  isPlaying: isPlaying,
+                  onTap: () => _playSound(sound.filePath),
+                ),
+                );
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SecondScreen()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                backgroundColor: Colors.blue,
+              ),
+              child: const Text(
+                'Vai alla Seconda Pagina',
+                style: TextStyle(fontSize: 18, color: Colors.white),
               ),
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
