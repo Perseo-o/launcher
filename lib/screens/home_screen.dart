@@ -1,17 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../models/sound_model.dart';
 import '../services/sound_service.dart';
 import '../widgets/sound_tile.dart';
-import 'second_screen.dart'; // Importa la seconda schermata
+import 'second_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -26,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> _loadSounds() async {
-    List<Sound> sounds = await SoundService().fetchSounds();
+    List<Sound> sounds = await SoundService().fetchData();
     setState(() {
       soundList = sounds;
     });
@@ -35,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
   void _playSound(String soundPath) async {
-    log(soundPath);
     if (playingSound == soundPath) {
       await _audioPlayer.stop();
       setState(() => playingSound = null);

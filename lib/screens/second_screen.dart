@@ -1,18 +1,16 @@
+
 import 'package:flutter/material.dart';
-import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import '../models/sound_model.dart';
 import '../services/sound_service.dart';
 import 'edit_sound_screen.dart';
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as path;
 
 class SecondScreen extends StatefulWidget {
   const SecondScreen({super.key});
 
   @override
-  _SecondScreenState createState() => _SecondScreenState();
+  State<SecondScreen> createState() => _SecondScreenState();
 }
 
 class _SecondScreenState extends State<SecondScreen> {
@@ -26,14 +24,14 @@ class _SecondScreenState extends State<SecondScreen> {
   }
 
   Future<void> _loadSounds() async {
-    List<Sound> sounds = await _soundService.fetchSounds();
+    List<Sound> sounds = await _soundService.fetchData();
     setState(() {
       soundList = sounds;
     });
   }
 
 
-  Future<void> _addNewSound() async {
+  /*Future<void> _addNewSound() async {
 
     FilePickerResult? audioResult = await FilePicker.platform.pickFiles(type: FileType.audio);
     if (audioResult == null) return;
@@ -59,9 +57,8 @@ class _SecondScreenState extends State<SecondScreen> {
     setState(() {
       soundList.add(newSound);
     });
-
     await _soundService.addSound(newSound);
-  }
+  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -113,10 +110,6 @@ class _SecondScreenState extends State<SecondScreen> {
             ),
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _addNewSound,
-        child: const Icon(Icons.add),
       ),
     );
   }
